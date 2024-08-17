@@ -1,3 +1,16 @@
+Step 1: Create the Bash Script
+Create a file named arix.sh and make it executable:
+
+touch todo.sh
+chmod +x arix.sh
+
+Step 2: Write the Bash Script
+Edit arix.sh to include the following code:
+
+nano arix.sh
+
+copy code in nano arix.sh
+
 #!/bin/bash
 
 # File to store tasks
@@ -86,3 +99,22 @@ main() {
 }
 
 main "$@"
+
+
+
+Usage Instructions
+
+1. Add a Task:
+./arix.sh add "Finish homework"
+
+2.View Tasks:
+./arix.sh view
+
+3. Delete a Task:
+./arix.sh del
+
+4.Help Menu:
+./arix.sh help
+
+
+PS:-THANKS!
