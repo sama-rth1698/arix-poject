@@ -1,0 +1,88 @@
+#!/bin/bash
+
+# File to store tasks
+TODO_FILE="$HOME/arix_list.txt"
+
+# Display banner
+display_banner() {
+    echo "==============================="
+    echo "|      WELCOME TO ARIX         |"
+    echo "==============================="
+}
+
+# Ensure the TODO file exists
+initialize() {
+    if [ ! -f "$TODO_FILE" ]; then
+        touch "$TODO_FILE"
+    fi
+}
+
+# Function to add a new task
+add_task() {
+    echo "$1" >> "$TODO_FILE"
+    echo "Task added: $1"
+}
+
+# Function to view all tasks
+view_tasks() {
+    if [ ! -s "$TODO_FILE" ]; then
+        echo "No tasks in the list."
+    else
+        echo "Your tasks:"
+        nl -s '. ' "$TODO_FILE"
+    fi
+}
+
+# Function to delete a task
+delete_task() {
+    view_tasks
+    echo -n "Enter the task number to delete: "
+    read -r task_number
+
+    if [ "$task_number" -gt 0 ] 2>/dev/null && [ "$task_number" -le "$(wc -l < "$TODO_FILE")" ]; then
+        sed -i "${task_number}d" "$TODO_FILE"
+        echo "Task $task_number deleted."
+    else
+        echo "Invalid task number."
+    fi
+}
+
+# Function to display the help menu
+display_help() {
+    echo "Arix Task Management"
+    echo "Usage: ./arix.sh [option] [task]"
+    echo "Options:"
+    echo "  add [task]      Add a new task"
+    echo "  view            View all tasks"
+    echo "  del             Delete a task by number"
+    echo "  help            Show this help message"
+}
+
+# Main script logic
+main() {
+    display_banner
+    initialize
+
+    case "$1" in
+        add)
+            shift
+            if [ -z "$1" ]; then
+                echo "Error: No task provided."
+                display_help
+            else
+                add_task "$*"
+            fi
+            ;;
+        view)
+            view_tasks
+            ;;
+        del)
+            delete_task
+            ;;
+        help|*)
+            display_help
+            ;;
+    esac
+}
+
+main "$@"
